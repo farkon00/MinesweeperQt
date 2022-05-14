@@ -18,3 +18,12 @@ class Grid(QtWidgets.QGridLayout):
             for j in range(self._size):
                 self.grid[-1].append(Cell(i, j))
                 self.addWidget(self.grid[-1][-1], i, j)
+
+        placed = 0
+        while placed < self.bombs:
+            x = QtCore.qrand() % self._size
+            y = QtCore.qrand() % self._size
+            if not self.grid[x][y].is_bomb and not self.grid[x][y].is_revealed:
+                self.grid[x][y].is_bomb = True
+                placed += 1
+                self.grid[x][y].update()
