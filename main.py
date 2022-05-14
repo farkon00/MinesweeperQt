@@ -6,6 +6,8 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from grid import Grid
+
 MODES: list[tuple[int, int]] = [
     (8, 10),
     (16, 40),
@@ -54,7 +56,17 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.toolbar_widget.setLayout(self.toolbar_layout)
 
-        self.setCentralWidget(self.toolbar_widget)
+        self.grid_widget = QtWidgets.QWidget()
+        self.grid_layout = Grid(self.level[0], self.level[1])
+        self.grid_widget.setLayout(self.grid_layout)
+
+        self.main_widget = QtWidgets.QWidget()
+        self.main_layout = QtWidgets.QVBoxLayout()
+        self.main_layout.addWidget(self.toolbar_widget)
+        self.main_layout.addWidget(self.grid_widget)
+        self.main_widget.setLayout(self.main_layout)
+
+        self.setCentralWidget(self.main_widget)
 
 def main() -> None:
     """
