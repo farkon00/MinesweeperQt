@@ -68,6 +68,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.setCentralWidget(self.main_widget)
 
+    def reset_grid(self):
+        self.grid_layout = Grid(self.level[0], self.level[1])
+        self.grid_layout.update()
+
 def main() -> None:
     """
     Runs the minesweeper game
