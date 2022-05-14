@@ -23,16 +23,22 @@ class Cell(QtWidgets.QPushButton):
         p.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         r = event.rect()
         outer, inner = QtCore.Qt.GlobalColor.gray, QtCore.Qt.GlobalColor.lightGray
-        p.fillRect(r, QtGui.QBrush(inner if not self.is_bomb else QtCore.Qt.GlobalColor.red))
+        p.fillRect(r, QtGui.QBrush((inner if not self.is_bomb else QtCore.Qt.GlobalColor.red) if self.is_revealed else outer))
         pen = QtGui.QPen(outer)
         pen.setWidth(1)
         p.setPen(pen)
         p.drawRect(r)
 
-        if self.is_revealed and not self.is_bomb:
+        around = self.grid.count_mines_around(self._x, self._y)
+        if self.is_revealed and not self.is_bomb and around > 0:
             self.setStyleSheet("color: black; font-weight: bold;")
-            p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.grid.count_mines_around(self._x, self._y)))
+            p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, str(around))
+
+        if self.is_revealed and self.is_bomb:
+            self.setStyleSheet("color: black; font-weight: bold;")
+            p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, "X")
 
     def on_click(self) -> None:
         self.is_revealed = True
+        self.grid.place_mines()
         self.update()
