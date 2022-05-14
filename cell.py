@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -39,6 +38,6 @@ class Cell(QtWidgets.QPushButton):
             p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, "X")
 
     def on_click(self) -> None:
-        self.is_revealed = True
+        self.grid.reveal_cells(self._x, self._y)
         self.grid.place_mines()
         self.update()

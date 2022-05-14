@@ -32,6 +32,16 @@ class Grid(QtWidgets.QGridLayout):
                         count += 1
         return count
 
+    def reveal_cells(self, x: int, y: int) -> None:
+        """
+        Reveals all cells around the cell
+        """
+        for i in range(x-1, x+2):
+            for j in range(y-1, y+2):
+                if i >= 0 and i < self._size and j >= 0 and j < self._size:
+                    self.grid[i][j].is_revealed = True
+                    self.grid[i][j].update()
+
     def place_mines(self) -> None:
         if self.is_placed:
             return
