@@ -16,7 +16,7 @@ class Grid(QtWidgets.QGridLayout):
         for i in range(self._size):
             self.grid.append([])
             for j in range(self._size):
-                self.grid[-1].append(Cell(i, j))
+                self.grid[-1].append(Cell(i, j, self))
                 self.addWidget(self.grid[-1][-1], i, j)
 
         placed = 0
@@ -27,3 +27,15 @@ class Grid(QtWidgets.QGridLayout):
                 self.grid[x][y].is_bomb = True
                 placed += 1
                 self.grid[x][y].update()
+
+    def count_mines_around(self, x, y):
+        """
+        Counts the number of mines around the cell
+        """
+        count = 0
+        for i in range(x-1, x+2):
+            for j in range(y-1, y+2):
+                if i >= 0 and i < self._size and j >= 0 and j < self._size:
+                    if self.grid[i][j].is_bomb:
+                        count += 1
+        return count
