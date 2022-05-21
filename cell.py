@@ -60,6 +60,9 @@ class Cell(QtWidgets.QPushButton):
 
             self.grid.place_mines()
         else:
+            if self.is_revealed:
+                return
+
             if not self.is_flagged:
                 self.grid.state.flag()
                 self.is_flagged = True
