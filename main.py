@@ -7,7 +7,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from grid import Grid
-from state import State
+from state import *
 
 MODES: list[tuple[int, int]] = [
     (8, 16),
@@ -24,6 +24,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.level = MODES[0]
         self.level_index = 0
+
+        self._timer = QtCore.QTimer()
+        self._timer.timeout.connect(self.update_timer)
+        self._timer.start(1000)
+
+        self.timer_value = 0 
 
         self.init_ui()
 
@@ -70,6 +76,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main_widget.setLayout(self.main_layout)
 
         self.setCentralWidget(self.main_widget)
+
+    def update_timer(self):
+        if self.state.status == Statuses.PLAYING:
+            self.timer_value += 1
+            self.clock.setText(f"Timer: {self.timer_value}")
 
     def reset_grid(self):
         self.grid_layout = Grid(self.level[0], self.level[1])
