@@ -7,6 +7,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from grid import Grid
+from state import State
 
 MODES: list[tuple[int, int]] = [
     (8, 16),
@@ -49,6 +50,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.restart_button.setFlat(True)
         self.toolbar_layout.addWidget(self.restart_button)
 
+        self.state = State(self.restart_button)
+
         self.clock = QtWidgets.QLabel("Timer: 0")
         self.clock.setFont(QtGui.QFont("Arial", 20))
         self.clock.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -57,7 +60,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolbar_widget.setLayout(self.toolbar_layout)
 
         self.grid_widget = QtWidgets.QWidget()
-        self.grid_layout = Grid(self.level[0], self.level[1])
+        self.grid_layout = Grid(self.state, self.level[0], self.level[1])
         self.grid_widget.setLayout(self.grid_layout)
 
         self.main_widget = QtWidgets.QWidget()

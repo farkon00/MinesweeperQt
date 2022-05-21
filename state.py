@@ -1,5 +1,7 @@
 from enum import Enum, auto 
 
+from PyQt5 import QtGui, QtWidgets
+
 class Statuses(Enum):
     """
     Enum of statuses for the game.
@@ -18,5 +20,18 @@ class State:
         Statuses.WON:     "images/cross.png",
         Statuses.LOST:    "images/smiley_lol.png"
     }
-    def __init__(self):
+
+    def __init__(self, icon : QtWidgets.QPushButton):
+        self.icon = icon
+
         self.status = Statuses.READY
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        self._status = value
+
+        self.icon.setIcon(QtGui.QIcon(State.icons[self._status]))

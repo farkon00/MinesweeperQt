@@ -5,8 +5,10 @@ class Grid(QtWidgets.QGridLayout):
     """
     Grid of minesweeper game
     """
-    def __init__(self, size: int, bombs: int, *args, **kwargs) -> None:
+    def __init__(self, state, size: int, bombs: int, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+
+        self.state = state
 
         self._size = size
         self.bombs = bombs
