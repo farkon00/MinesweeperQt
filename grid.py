@@ -37,13 +37,27 @@ class Grid(QtWidgets.QGridLayout):
                         count += 1
         return count
 
+    def check_win(self):
+        is_win = True
+        for i in self.grid:
+            for j in i:
+                if not (j.is_bomb or j.is_revealed):
+                    is_win = False
+
+        if is_win:
+            self.state.status = Statuses.WON     
+
+        print(is_win)
+
     def reveal_cells(self, x: int, y: int) -> None:
         """
-        Reveals all cells around the cell
+        Reveals all cells around the cell, if they should be revealed
+        Checks for win
         """
         self.grid[x][y].is_revealed = True
         if self.count_mines_around(x, y) != 0:
             self.grid[x][y].update()
+            self.check_win()
             return
         for i in range(x-1, x+2):
             for j in range(y-1, y+2):
@@ -51,6 +65,7 @@ class Grid(QtWidgets.QGridLayout):
                     if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb and not self.grid[i][j].is_flagged:
                         self.grid[i][j].is_revealed = True
                     self.grid[i][j].update()
+        self.check_win()
 
     def place_mines(self) -> None:
         """Places mines on the grid, will make all checks by itself"""
