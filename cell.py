@@ -22,7 +22,13 @@ class Cell(QtWidgets.QPushButton):
         p.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         r = event.rect()
         outer, inner = QtCore.Qt.GlobalColor.gray, QtCore.Qt.GlobalColor.lightGray
-        p.fillRect(r, QtGui.QBrush((inner if not self.is_bomb else QtCore.Qt.GlobalColor.red) if self.is_revealed else outer))
+        if self.is_revealed:
+            if self.is_bomb:
+                p.fillRect(r, QtGui.QBrush(QtCore.Qt.GlobalColor.red))
+            else:
+                p.fillRect(r, QtGui.QBrush(QtCore.Qt.GlobalColor.transparent))
+        else:
+            p.fillRect(r, QtGui.QBrush(inner))
         pen = QtGui.QPen(outer)
         pen.setWidth(1)
         p.setPen(pen)

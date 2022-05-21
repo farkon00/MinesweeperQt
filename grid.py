@@ -36,10 +36,15 @@ class Grid(QtWidgets.QGridLayout):
         """
         Reveals all cells around the cell
         """
+        self.grid[x][y].is_revealed = True
+        if self.count_mines_around(x, y) != 0:
+            self.grid[x][y].update()
+            return
         for i in range(x-1, x+2):
             for j in range(y-1, y+2):
                 if i >= 0 and i < self._size and j >= 0 and j < self._size:
-                    self.grid[i][j].is_revealed = True
+                    if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb:
+                        self.grid[i][j].is_revealed = True
                     self.grid[i][j].update()
 
     def place_mines(self) -> None:

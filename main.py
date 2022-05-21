@@ -9,7 +9,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from grid import Grid
 
 MODES: list[tuple[int, int]] = [
-    (8, 1),
+    (8, 16),
     (16, 40),
     (24, 99)
 ]
