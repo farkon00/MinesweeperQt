@@ -10,7 +10,7 @@ from grid import Grid
 from state import *
 
 MODES: list[tuple[int, int]] = [
-    (8, 16),
+    (4, 1),
     (16, 40),
     (24, 99)
 ]

@@ -54,12 +54,17 @@ class Cell(QtWidgets.QPushButton):
             if self.is_flagged:
                 return
 
-            self.grid.reveal_cells(self._x, self._y)
-            if self.is_bomb:
-                self.grid.state.status = Statuses.LOST
+            if self.is_revealed:
+                if self.grid.is_flags_right(self._x, self._y):
+                    self.grid.reveal_around(self._x, self._y)
+                    self.grid.check_win()
+            else:
+                self.grid.reveal_cells(self._x, self._y)
+                if self.is_bomb:
+                    self.grid.state.status = Statuses.LOST
 
-            self.grid.place_mines()
-        else:
+                self.grid.place_mines()
+        elif event.button() == QtCore.Qt.MouseButton.RightButton:
             if self.is_revealed:
                 return
 

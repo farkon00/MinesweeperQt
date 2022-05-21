@@ -37,6 +37,19 @@ class Grid(QtWidgets.QGridLayout):
                         count += 1
         return count
 
+    def is_flags_right(self, x: int, y: int) -> bool:
+        """
+        Checks if flags around the cell is right
+        """
+        for i in range(x-1, x+2):
+            for j in range(y-1, y+2):
+                if i >= 0 and i < self._size and j >= 0 and j < self._size:
+                    if self.grid[i][j].is_bomb and not self.grid[i][j].is_flagged:
+                        return False
+                    elif not self.grid[i][j].is_bomb and self.grid[i][j].is_flagged:
+                        return False
+        return True
+
     def check_win(self):
         flag = []
         for i in self.grid:
@@ -50,6 +63,15 @@ class Grid(QtWidgets.QGridLayout):
         for i in flag:
             j.is_flagged = True    
             j.update() 
+
+    def reveal_around(self, x: int, y: int):
+        """Reveals all cells around the cell"""
+        for i in range(x-1, x+2):
+            for j in range(y-1, y+2):
+                if i >= 0 and i < self._size and j >= 0 and j < self._size:
+                    if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb and not self.grid[i][j].is_flagged:
+                        self.grid[i][j].is_revealed = True
+                        self.grid[i][j].update()
 
     def reveal_cells(self, x: int, y: int) -> None:
         """
