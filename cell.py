@@ -45,6 +45,9 @@ class Cell(QtWidgets.QPushButton):
             p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, "X")
 
     def on_click(self) -> None:
+        if self.grid.state.status == Statuses.LOST:
+            return 
+
         self.grid.reveal_cells(self._x, self._y)
         if self.is_bomb:
             self.grid.state.status = Statuses.LOST
