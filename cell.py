@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from state import Statuses 
 
 
 class Cell(QtWidgets.QPushButton):
@@ -45,5 +46,8 @@ class Cell(QtWidgets.QPushButton):
 
     def on_click(self) -> None:
         self.grid.reveal_cells(self._x, self._y)
+        if self.is_bomb:
+            self.grid.state.status = Statuses.LOST
+
         self.grid.place_mines()
         self.update()

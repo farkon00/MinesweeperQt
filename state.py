@@ -17,8 +17,8 @@ class State:
     icons = {
         Statuses.READY:   "images/plus.png",
         Statuses.PLAYING: "images/smiley.png",
-        Statuses.WON:     "images/cross.png",
-        Statuses.LOST:    "images/smiley_lol.png"
+        Statuses.WON:     "images/smiley-lol.png",
+        Statuses.LOST:    "images/cross.png"
     }
 
     def __init__(self, icon : QtWidgets.QPushButton):

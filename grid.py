@@ -1,3 +1,5 @@
+import random
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from cell import Cell
 from state import *
@@ -57,8 +59,8 @@ class Grid(QtWidgets.QGridLayout):
         self.state.status = Statuses.PLAYING
         placed = 0
         while placed < self.bombs:
-            x = QtCore.qrand() % self._size
-            y = QtCore.qrand() % self._size
+            x = random.randint(0, self._size-1)
+            y = random.randint(0, self._size-1)
             if not self.grid[x][y].is_bomb and not self.grid[x][y].is_revealed:
                 self.grid[x][y].is_bomb = True
                 placed += 1
