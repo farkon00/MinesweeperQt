@@ -48,7 +48,7 @@ class Grid(QtWidgets.QGridLayout):
         for i in range(x-1, x+2):
             for j in range(y-1, y+2):
                 if i >= 0 and i < self._size and j >= 0 and j < self._size:
-                    if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb:
+                    if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb and not self.grid[i][j].is_flagged:
                         self.grid[i][j].is_revealed = True
                     self.grid[i][j].update()
 

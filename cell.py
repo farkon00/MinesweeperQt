@@ -50,7 +50,7 @@ class Cell(QtWidgets.QPushButton):
         if self.grid.state.status == Statuses.LOST:
             return 
 
-        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton and not self.is_flagged:
             self.grid.reveal_cells(self._x, self._y)
             if self.is_bomb:
                 self.grid.state.status = Statuses.LOST
