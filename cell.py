@@ -45,6 +45,7 @@ class Cell(QtWidgets.QPushButton):
             p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, "X")
 
     def on_click(self) -> None:
+        """Handler for click event"""
         if self.grid.state.status == Statuses.LOST:
             return 
 

@@ -53,6 +53,7 @@ class Grid(QtWidgets.QGridLayout):
                     self.grid[i][j].update()
 
     def place_mines(self) -> None:
+        """Places mines on the grid, will make all checks by itself"""
         if self.is_placed:
             return
 

@@ -78,11 +78,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def update_timer(self):
+        """Updates clock text and timer value"""
         if self.state.status == Statuses.PLAYING:
             self.timer_value += 1
             self.clock.setText(f"Timer: {self.timer_value}")
 
     def reset_grid(self):
+        """Creates new grid"""
         self.grid_layout = Grid(self.level[0], self.level[1])
         self.grid_layout.update()
 
