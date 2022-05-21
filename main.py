@@ -25,8 +25,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.level = MODES[0]
         self.level_index = 0
 
-        self._timer = QtCore.QTimer()
-        self._timer.timeout.connect(self.update_timer)
+        self._timer = QtCore.QTimer() 
+        self._timer.timeout.connect(self.update_timer) # type: ignore
         self._timer.start(1000)
 
         self.timer_value = 0 
