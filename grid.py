@@ -1,11 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from cell import Cell
+from state import *
 
 class Grid(QtWidgets.QGridLayout):
     """
     Grid of minesweeper game
     """
-    def __init__(self, state, size: int, bombs: int, *args, **kwargs) -> None:
+    def __init__(self, state: State, size: int, bombs: int, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.state = state
@@ -53,6 +54,7 @@ class Grid(QtWidgets.QGridLayout):
         if self.is_placed:
             return
 
+        self.state.status = Statuses.PLAYING
         placed = 0
         while placed < self.bombs:
             x = QtCore.qrand() % self._size
