@@ -38,12 +38,18 @@ class Grid(QtWidgets.QGridLayout):
         return count
 
     def check_win(self):
+        flag = []
         for i in self.grid:
             for j in i:
                 if not (j.is_bomb or j.is_revealed):
                     return
+                elif j.is_revealed and not j.is_flagged:
+                    flag.append(j)
 
-        self.state.status = Statuses.WON     
+        self.state.status = Statuses.WON
+        for i in flag:
+            j.is_flagged = True    
+            j.update() 
 
     def reveal_cells(self, x: int, y: int) -> None:
         """

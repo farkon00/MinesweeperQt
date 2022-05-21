@@ -47,7 +47,7 @@ class Cell(QtWidgets.QPushButton):
     def mouseReleaseEvent(self, event) -> None:
         """Handler for click event"""
 
-        if self.grid.state.status == Statuses.LOST:
+        if self.grid.state.status == Statuses.LOST or self.grid.state.status == Statuses.WON:
             return 
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
