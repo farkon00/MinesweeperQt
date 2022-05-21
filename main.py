@@ -54,6 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.restart_button.setIconSize(QtCore.QSize(32, 32))
         self.restart_button.setIcon(QtGui.QIcon("images/smiley.png"))
         self.restart_button.setFlat(True)
+        self.restart_button.clicked.connect(self.restart) # type: ignore
         self.toolbar_layout.addWidget(self.restart_button)
 
         self.state = State(self.level, self.restart_button, self.mines_label)
@@ -83,10 +84,20 @@ class MainWindow(QtWidgets.QMainWindow):
             self.timer_value += 1
             self.clock.setText(f"Timer: {self.timer_value}")
 
-    def reset_grid(self):
-        """Creates new grid"""
-        self.grid_layout = Grid(self.level[0], self.level[1])
-        self.grid_layout.update()
+    def restart(self):
+        """Restarts game"""
+        self.grid_layout = Grid(self.state, self.level[0], self.level[1])
+        new_grid_widget = QtWidgets.QWidget()
+        new_grid_widget.setLayout(self.grid_layout)
+        self.main_layout.removeWidget(self.grid_widget)
+        self.main_layout.addWidget(new_grid_widget)
+        self.grid_widget = new_grid_widget
+
+        self.state.status = Statuses.READY
+        self.state.mines_left = self.level[1]
+        self.state.mines_left_label.setText(f"Mines left: {self.level[1]}")
+        self.timer_value = 0
+        self.clock.setText(f"Timer: {self.timer_value}")
 
 def main() -> None:
     """
