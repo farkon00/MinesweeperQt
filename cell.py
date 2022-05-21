@@ -56,7 +56,6 @@ class Cell(QtWidgets.QPushButton):
                 self.grid.state.status = Statuses.LOST
 
             self.grid.place_mines()
-            self.update()
         else:
             if not self.is_flagged:
                 self.grid.state.flag()
@@ -64,3 +63,5 @@ class Cell(QtWidgets.QPushButton):
             else:
                 self.grid.state.unflag()
                 self.is_flagged = False
+
+        self.update()
