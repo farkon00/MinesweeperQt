@@ -21,10 +21,26 @@ class State:
         Statuses.LOST:    "images/cross.png"
     }
 
-    def __init__(self, icon : QtWidgets.QPushButton):
+    def __init__(self, mode: tuple[int, int], icon : QtWidgets.QPushButton, mines_left_label : QtWidgets.QLabel):
         self.icon = icon
+        self.mines_left_label = mines_left_label
+        self.mines_left = mode[1]
 
         self.status = Statuses.READY
+
+    def flag(self):
+        """
+        Decrements mines left.
+        """
+        self.mines_left -= 1
+        self.mines_left_label.setText(f"Mines left: {self.mines_left}")
+
+    def unflag(self):
+        """
+        Decrements mines left.
+        """
+        self.mines_left += 1
+        self.mines_left_label.setText(f"Mines left: {self.mines_left}")
 
     @property
     def status(self):

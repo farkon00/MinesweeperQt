@@ -13,8 +13,6 @@ class Cell(QtWidgets.QPushButton):
 
         self.is_bomb = self.is_revealed = self.is_flagged = False
 
-        self.clicked.connect(self.on_click)
-
     def paintEvent(self, event):
         """
         Renders cell
@@ -28,6 +26,8 @@ class Cell(QtWidgets.QPushButton):
                 p.fillRect(r, QtGui.QBrush(QtCore.Qt.GlobalColor.red))
             else:
                 p.fillRect(r, QtGui.QBrush(QtCore.Qt.GlobalColor.transparent))
+        elif self.is_flagged:
+            p.fillRect(r, QtGui.QBrush(QtCore.Qt.GlobalColor.blue))
         else:
             p.fillRect(r, QtGui.QBrush(inner))
         pen = QtGui.QPen(outer)
@@ -44,14 +44,23 @@ class Cell(QtWidgets.QPushButton):
             self.setStyleSheet("color: black; font-weight: bold;")
             p.drawText(r, QtCore.Qt.AlignmentFlag.AlignCenter, "X")
 
-    def on_click(self) -> None:
+    def mouseReleaseEvent(self, event) -> None:
         """Handler for click event"""
+
         if self.grid.state.status == Statuses.LOST:
             return 
 
-        self.grid.reveal_cells(self._x, self._y)
-        if self.is_bomb:
-            self.grid.state.status = Statuses.LOST
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            self.grid.reveal_cells(self._x, self._y)
+            if self.is_bomb:
+                self.grid.state.status = Statuses.LOST
 
-        self.grid.place_mines()
-        self.update()
+            self.grid.place_mines()
+            self.update()
+        else:
+            if not self.is_flagged:
+                self.grid.state.flag()
+                self.is_flagged = True
+            else:
+                self.grid.state.unflag()
+                self.is_flagged = False

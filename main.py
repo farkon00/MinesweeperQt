@@ -56,7 +56,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.restart_button.setFlat(True)
         self.toolbar_layout.addWidget(self.restart_button)
 
-        self.state = State(self.restart_button)
+        self.state = State(self.level, self.restart_button, self.mines_label)
 
         self.clock = QtWidgets.QLabel("Timer: 0")
         self.clock.setFont(QtGui.QFont("Arial", 20))
