@@ -91,7 +91,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.levels_widget = QtWidgets.QWidget()
         self.levels_widget.setLayout(self.level_layout)
 
-        self.best_label = QtWidgets.QLabel("Best: 0")
+        self.best_label = QtWidgets.QLabel("Best: -")
         self.best_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.best_label.setFont(QtGui.QFont("Arial", 25))
 
@@ -107,7 +107,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.state.load_bests()
-        self.best_label.setText(f"Best: {self.state.bests[self.level_index]}")
+        self.best_label.setText(f"Best: {self.state.bests[self.level_index] if self.state.bests[self.level_index] is not None else '-'}")
 
     def update_timer(self):
         """Updates clock text and timer value"""
@@ -142,7 +142,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.level = MODES[2]
             self.level_index = 2
 
-        self.best_label.setText(f"Best: {self.state.bests[self.level_index]}")
+        self.best_label.setText(f"Best: {self.state.bests[self.level_index] if self.state.bests[self.level_index] is not None else '-'}")
         self.restart()
 
 def main() -> None:

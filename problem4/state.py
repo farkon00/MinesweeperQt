@@ -61,7 +61,7 @@ class State:
         if (self.bests[self.game.level_index] > self.game.timer_value) if \
           self.bests[self.game.level_index] is not None else True:
             self.bests[self.game.level_index] = self.game.timer_value
-            self.game.best_label.setText(f"Best: {self.bests[self.game.level_index]}")
+            self.game.best_label.setText(f"Best: {self.bests[self.level_index] if self.bests[self.level_index] is not None else '-'}")
 
         self.dump_bests()
 
