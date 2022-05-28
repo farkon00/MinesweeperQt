@@ -25,7 +25,7 @@ class Grid(QtWidgets.QGridLayout):
         for i in range(self._size):
             self.grid.append([])
             for j in range(self._size):
-                self.grid[-1].append(Cell(i, j, self))
+                self.grid[-1].append(Cell(j, i, self))
                 self.addWidget(self.grid[-1][-1], i, j)
 
     def count_mines_around(self, x, y):
@@ -33,8 +33,8 @@ class Grid(QtWidgets.QGridLayout):
         Counts the number of mines around the cell
         """
         count = 0
-        for i in range(x-1, x+2):
-            for j in range(y-1, y+2):
+        for i in range(y-1, y+2):
+            for j in range(x-1, x+2):
                 if i >= 0 and i < self._size and j >= 0 and j < self._size:
                     if self.grid[i][j].is_bomb:
                         count += 1
@@ -67,42 +67,33 @@ class Grid(QtWidgets.QGridLayout):
             j.is_flagged = True    
             j.update() 
 
-    def reveal_around(self, x: int, y: int):
+    def reveal_around(self, x: int, y: int) -> None:
         """Reveals all cells around the cell"""
-        self.grid[y][x].is_revealed = True
-        print("what")
-        if self.count_mines_around(x, y) != 0:
-            self.grid[y][x].update()
-            self.check_win()
-            return
-        for yi in range(y-1, y+2):
-            for xi in range(x-1, x+2):
-                if xi >= 0 and xi < self._size and yi >= 0 and yi < self._size:
-                    if not self.grid[yi][xi].is_revealed and not self.grid[yi][xi].is_bomb and not self.grid[yi][xi].is_flagged:
-                        #print(yi, xi)
-                        self.reveal_around(xi, yi)
-                        self.grid[yi][xi].update()
+        self.place_mines(x, y)
+
+        queue = [(x, y)]
+        while queue:
+            x, y = queue.pop()
+            cell = self.grid[y][x]
+            if not cell.is_revealed or cell.is_flagged:  
+                cell.is_revealed = True
+                if self.count_mines_around(x, y) != 0:
+                    continue
+                for i in range(-1, 2):
+                    for j in range(-1, 2):
+                        if x+i < 0 or y+j < 0 or x+i >= self._size or y+j >= self._size:
+                            continue
+                        cell = self.grid[y+j][x+i]
+                        if not any((cell.is_revealed, cell.is_flagged, cell.is_bomb)):
+                            queue.append((x+i, y+j))
+
+        for i in self.grid:
+            for j in i:
+                j.update()
+
         self.check_win()
 
-    def reveal_cells(self, x: int, y: int) -> None:
-        """
-        Reveals all cells around the cell, if they should be revealed
-        Checks for win
-        """
-        self.grid[x][y].is_revealed = True
-        if self.count_mines_around(x, y) != 0:
-            self.grid[x][y].update()
-            self.check_win()
-            return
-        for i in range(x-1, x+2):
-            for j in range(y-1, y+2):
-                if i >= 0 and i < self._size and j >= 0 and j < self._size:
-                    if not self.grid[i][j].is_revealed and not self.grid[i][j].is_bomb and not self.grid[i][j].is_flagged:
-                        self.grid[i][j].is_revealed = True
-                    self.grid[i][j].update()
-        self.check_win()
-
-    def place_mines(self) -> None:
+    def place_mines(self, opened_x: int, opened_y: int) -> None:
         """Places mines on the grid, will make all checks by itself"""
         if self.is_placed:
             return
@@ -112,7 +103,9 @@ class Grid(QtWidgets.QGridLayout):
         while placed < self.bombs:
             x = random.randint(0, self._size-1)
             y = random.randint(0, self._size-1)
-            if not self.grid[x][y].is_bomb and not self.grid[x][y].is_revealed:
+            if not self.grid[x][y].is_bomb and\
+                not opened_x-1 <= x <= opened_x+1 and\
+                not opened_y-1 <= y <= opened_y+1:
                 self.grid[x][y].is_bomb = True
                 placed += 1
                 self.grid[x][y].update()
