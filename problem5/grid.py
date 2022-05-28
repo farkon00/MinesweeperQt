@@ -109,6 +109,5 @@ class Grid(QtWidgets.QGridLayout):
                 self.grid[x][y].is_bomb = True
                 placed += 1
                 self.grid[x][y].update()
-            print("whaa")
 
         self.is_placed = True
