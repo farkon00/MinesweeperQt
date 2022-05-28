@@ -43,7 +43,7 @@ class Cell(QtWidgets.QPushButton):
 
         around = self.grid.count_mines_around(self._x, self._y)
         if self.is_revealed and not self.is_bomb and around > 0:
-            self.setStyleSheet(f"color: red; font-weight: bold;")
+            self.setStyleSheet(f"font-weight: bold;")
             pen = QtGui.QPen(self.MINE_COLORS[around - 1])
             pen.setWidth(1)
             p.setPen(pen)
