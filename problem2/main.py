@@ -70,8 +70,30 @@ class MainWindow(QtWidgets.QMainWindow):
         self.grid_layout = Grid(self.state, self.level[0], self.level[1])
         self.grid_widget.setLayout(self.grid_layout)
 
+        self.level_layout = QtWidgets.QHBoxLayout()
+        self.level_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.levels_group = QtWidgets.QButtonGroup()
+        
+        self.level_easy = QtWidgets.QRadioButton("Easy")
+        self.level_easy.setChecked(True)
+        self.levels_group.addButton(self.level_easy)
+        self.level_layout.addWidget(self.level_easy)
+        
+        self.level_medium = QtWidgets.QRadioButton("Medium")
+        self.levels_group.addButton(self.level_medium)
+        self.level_layout.addWidget(self.level_medium)
+
+        self.level_hard = QtWidgets.QRadioButton("Hard")
+        self.levels_group.addButton(self.level_hard)
+        self.level_layout.addWidget(self.level_hard)
+
+        self.levels_group.buttonToggled.connect(self.change_level) # type: ignore
+        self.levels_widget = QtWidgets.QWidget()
+        self.levels_widget.setLayout(self.level_layout)
+
         self.main_widget = QtWidgets.QWidget()
         self.main_layout = QtWidgets.QVBoxLayout()
+        self.main_layout.addWidget(self.levels_widget)
         self.main_layout.addWidget(self.toolbar_widget)
         self.main_layout.addWidget(self.grid_widget)
         self.main_widget.setLayout(self.main_layout)
@@ -98,6 +120,20 @@ class MainWindow(QtWidgets.QMainWindow):
         self.state.mines_left_label.setText(f"Mines left: {self.level[1]}")
         self.timer_value = 0
         self.clock.setText(f"Timer: {self.timer_value}")
+
+    def change_level(self, button: QtWidgets.QAbstractButton):
+        """Changes level of game"""
+        if button.text() == "Easy":
+            self.level = MODES[0]
+            self.level_index = 0
+        elif button.text() == "Medium":
+            self.level = MODES[1]
+            self.level_index = 1
+        elif button.text() == "Hard":
+            self.level = MODES[2]
+            self.level_index = 2
+
+        self.restart()
 
 def main() -> None:
     """
